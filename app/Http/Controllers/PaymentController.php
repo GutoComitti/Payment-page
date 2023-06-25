@@ -41,6 +41,8 @@ class PaymentController extends Controller
      */
     public function success()
     {
+        $payment = Payment::find(Session::get('lastPaymentId'));
+        return view('success', ["payment" => $payment]);
     }
 
     private function getPaymentResourceClass(Payment $payment){
