@@ -10,8 +10,6 @@
 
 ## Installation
 
-php artisan migrate:fresh --seed
-
 1. Access the root folder of the project;
 2. Create a copy of the file .env.example, rename it to .env;
 3. Fill the information regarding ASAAS sandbox keys: ASAAS api key and ASAAS Wallet ID
