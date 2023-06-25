@@ -6,6 +6,9 @@ use App\Actions\PaymentAction;
 use App\DataTransferObjects\PaymentDto;
 use App\Http\Requests\PaymentRequest;
 use App\Models\BillingType;
+use App\Models\Payment;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -30,7 +33,7 @@ class PaymentController extends Controller
     {
         $payment = $action->execute(PaymentDto::fromSuccessRequest($request));
         // Since different payment types have very different data, it makes sense to have a resource for each of them
-        return $payment;
+        return $this->getPaymentResourceClass($payment)::make($payment);
     }
 
     /**
@@ -38,5 +41,11 @@ class PaymentController extends Controller
      */
     public function success()
     {
+    }
+
+    private function getPaymentResourceClass(Payment $payment){
+        $paymentType = Str::studly(strtolower($payment->billingType->type));
+        $resourceClass = 'App\\Http\\Resources\\' . $paymentType . 'PaymentResource';
+        return $resourceClass;
     }
 }
